@@ -2,92 +2,81 @@
 #include "Render.h"
 using namespace std;
 
-float xMin = -1.0, xMax = 1.0, yMin = -1.0, yMax = 1.0; 
+float xMin = -1.0, xMax = 1.0, yMin = -1.0, yMax = 1.0;
 
-float posx = 10.0;
-float posy = 5.0;
-float posz = 20.0;
+float posx = 0;
+float posy = 20;
+float posz = 20;
 
 float alvox = 0.0;
 float alvoy = 0.0;
 float alvoz = 0.0;
 
 float ang = 0.0;
-int proj = 0;
+float angX = 0.0;
+float angY = 0.0;
+float angZ = 0.0;
 
-double zNear = 1;
-double zFar = 120;
-double zoom = 40;
+float moveX;
+float moveY;
 
 void View() {
 
-	//Tipo de camera
-	if (proj == 0)
-		glOrtho(-zoom, zoom, -zoom, zoom, zNear, zFar);
-	else if (proj == 1)
-		gluPerspective(140, 1, zNear, zFar);
+	glOrtho(-100, 100, -100, 100, 1, 120);
 
 	//Posição da camera
 	gluLookAt(posx, posy, posz, alvox, alvoy, alvoz, 0, 1, 0);
 }
 
-void DrawPyramid(){
+void DrawCapybara() {
 	//Comandos para habilitar a transparencia em areas sobrepostas
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//Faces
 	glBegin(GL_QUADS);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3i(-10, -5, -10);
-	glVertex3i(10, -5, -10);
-	glVertex3i(10, -5, 10);
-	glVertex3i(-10, -5, 10);
+	glColor3f(0.0f + moveX, 0.0f + moveY, 1.0f);
+	glVertex3i(-10 + moveX, -5 + moveY, -10);
+	glVertex3i(10 + moveX, -5 + moveY, -10);
+	glVertex3i(10 + moveX, -5 + moveY, 10);
+	glVertex3i(-10 + moveX, -5 + moveY, 10);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(1.0f, 0.0f, 0.0f, 0.5);
-	glVertex3i(10, -5, -10);
-	glVertex3i(10, -5, 10);
-	glVertex3i(0, 15, 0);
+	glColor4f(1.0f + moveX, 0.0f + moveY, 0.0f, 0.5);
+	glVertex3i(10 + moveX, -5 + moveY, -10);
+	glVertex3i(10 + moveX, -5 + moveY, 10);
+	glVertex3i(0 + moveX, 15 + moveY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f, 1.0f, 0.0f, 0.5);
-	glVertex3i(10, -5, 10);
-	glVertex3i(-10, -5, 10);
-	glVertex3i(0, 15, 0);
+	glColor4f(0.0f + moveX, 1.0f + moveY, 0.0f, 0.5);
+	glVertex3i(10 + moveX, -5 + moveY, 10);
+	glVertex3i(-10 + moveX, -5 + moveY, 10);
+	glVertex3i(0 + moveX, 15 + moveY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f, 0.0f, 1.0f, 0.5);
-	glVertex3i(-10, -5, -10);
-	glVertex3i(10, -5, -10);
-	glVertex3i(0, 15, 0);
+	glColor4f(0.0f + moveX, 0.0f + moveY, 1.0f, 0.5);
+	glVertex3i(-10 + moveX, -5 + moveY, -10);
+	glVertex3i(10 + moveX, -5 + moveY, -10);
+	glVertex3i(0 + moveX, 15 + moveY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.1f, 0.22f, 0.5f, 0.5);
-	glVertex3i(-10, -5, -10);
-	glVertex3i(-10, -5, 10);
-	glVertex3i(0, 15, 0);
+	glColor4f(0.1f + moveX, 0.22f + moveY, 0.5f, 0.5);
+	glVertex3i(-10 + moveX, -5 + moveY, -10);
+	glVertex3i(-10 + moveX, -5 + moveY, 10);
+	glVertex3i(0 + moveX, 15 + moveY, 0);
 	glEnd();
 }
 
 void DrawScene() {
 
 	View();
-	glRotatef(ang, 0, 1, 0);
 	glTranslatef(0, 0, 0);
 
-	DrawPyramid();
-
-	glTranslatef(10, 0, 10);
-	glScalef(0.8, 0.8, 0.8);
-	DrawPyramid();
-
-	glTranslatef(-20, 0, 0);
-	DrawPyramid();
+	DrawCapybara();
 }
 
 static void error_callback(int error, const char* description)
@@ -101,32 +90,31 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	//Angle control
-	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	if (key == GLFW_KEY_W && action == GLFW_PRESS)
 		ang += 10;
-	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	if (key == GLFW_KEY_S && action == GLFW_PRESS)
 		ang -= 10;
-	if (key == GLFW_KEY_D && action == GLFW_PRESS)
-		zoom = 40;
 
-	//Camera zoom
+	//Capybara control
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
-		if (zoom > 20)
-			zoom -= 10;
-		//zNear += 10;
-		//zFar -= 10;
+		moveY += 10;
+		cout << moveY << endl;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
-		zoom += 10;
+		moveY -= 10;
+		cout << moveY << endl;
 	}
-
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
-		if (proj == 0)
-			proj = 1;
-		else
-			proj = 0;
+		moveX -= 10;
+		cout << moveX << endl;
+	}
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	{
+		moveX += 10;
+		cout << moveX << endl;
 	}
 }
 
@@ -164,7 +152,7 @@ int main()
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		
+
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
