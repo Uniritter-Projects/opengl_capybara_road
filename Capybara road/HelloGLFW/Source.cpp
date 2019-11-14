@@ -8,10 +8,6 @@ float posx = 0;
 float posy = 20;
 float posz = 20;
 
-float alvox = 0.0;
-float alvoy = 0.0;
-float alvoz = 0.0;
-
 float ang = 0.0;
 float angX = 0.0;
 float angY = 0.0;
@@ -19,6 +15,10 @@ float angZ = 0.0;
 
 float moveX;
 float moveY;
+
+float alvox = 0;
+float alvoy = 0;
+float alvoz = 0;
 
 void View() {
 
@@ -89,31 +89,25 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-	//Angle control
-	if (key == GLFW_KEY_W && action == GLFW_PRESS)
-		ang += 10;
-	if (key == GLFW_KEY_S && action == GLFW_PRESS)
-		ang -= 10;
-
 	//Capybara control
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
-		moveY += 10;
+		moveY += 20;
 		cout << moveY << endl;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
-		moveY -= 10;
+		moveY -= 20;
 		cout << moveY << endl;
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
-		moveX -= 10;
+		moveX -= 20;
 		cout << moveX << endl;
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
-		moveX += 10;
+		moveX += 20;
 		cout << moveX << endl;
 	}
 }
@@ -126,7 +120,7 @@ int main()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	window = glfwCreateWindow(640, 480, "First 3D", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "Capybara road", NULL, NULL);
 
 	if (!window)
 	{
@@ -147,7 +141,7 @@ int main()
 		glfwGetFramebufferSize(window, &width, &height);
 		glViewport(0, 0, width, height);
 
-		glClearColor(0, 0, 0, 0);
+		glClearColor(0.3, 0.8, 0.6, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glMatrixMode(GL_PROJECTION);
