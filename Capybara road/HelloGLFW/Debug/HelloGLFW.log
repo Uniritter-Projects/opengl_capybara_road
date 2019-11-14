@@ -1,0 +1,18 @@
+﻿  Render.cpp
+  Source.cpp
+c:\users\alu201722556\desktop\opengl_capybara_road\capybara road\helloglfw\source.cpp(86): warning C4305: 'argumento': truncamento de 'double' para 'GLfloat'
+c:\users\alu201722556\desktop\opengl_capybara_road\capybara road\helloglfw\source.cpp(156): warning C4101: 'ratio': variável local não referenciada
+  Gerando Código...
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(context.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(init.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(input.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(monitor.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(window.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(win32_init.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(win32_monitor.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(win32_time.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(win32_tls.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(win32_tls.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(win32_window.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(winmm_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(winmm_joystick.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' não foi encontrado 'glfw3.lib(wgl_context.obj)' ou no 'C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\glfw.pdb'; vinculando objeto quando quando sem nenhuma informação de depuração
+  HelloGLFW.vcxproj -> C:\Users\alu201722556\Desktop\opengl_capybara_road\Capybara road\Debug\HelloGLFW.exe
