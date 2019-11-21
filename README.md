@@ -1,4 +1,4 @@
-# Capybara road
+# Capybara road - IN PROGRESS
 
 This game was made for the OpenGL's university course.
 
