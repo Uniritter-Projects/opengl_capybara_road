@@ -2,6 +2,13 @@
 #include "Render.h"
 using namespace std;
 
+struct enemy {
+	int xPos;
+	int yPos;
+	char direction;
+	float velocity;
+};
+
 float xMin = -1.0, xMax = 1.0, yMin = -1.0, yMax = 1.0;
 
 float posx = 0;
@@ -13,61 +20,98 @@ float angX = 0.0;
 float angY = 0.0;
 float angZ = 0.0;
 
-float moveX;
-float moveY;
+//Positions
+float capybaraPositionX;
+float capybaraPositionY;
+
+//Enemies
+const int enemiesCount = 3;
+enemy enemies[enemiesCount];
 
 float alvox = 0;
 float alvoy = 0;
 float alvoz = 0;
 
+bool shoot;
+float movey;
+float randVelocity;
+int stage = 1;
+
 void View() {
 
-	glOrtho(-100, 100, -100, 100, 1, 120);
+	glOrtho(-100, 100, -100, 100, -100, 250);
 
 	//Posição da camera
 	gluLookAt(posx, posy, posz, alvox, alvoy, alvoz, 0, 1, 0);
 }
 
+void SpawnEnemies() {
+
+	float xPos = -80;
+	float yPos = 0;
+
+	for (int i = 0; i < enemiesCount; i++)
+	{
+		enemies[i].xPos = xPos;
+		enemies[i].yPos = yPos;
+
+		yPos = yPos + 20;
+	}
+}
+
+void DrawEnemies() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4f(1, 0, 0, 1.0f);
+
+	//Faces
+	glBegin(GL_QUADS);
+	glVertex3i(-10 + +movey, -5, -10);
+	glVertex3i(10 + movey, -5, -10);
+	glVertex3i(10 + movey, -5, 10);
+	glVertex3i(-10 + movey, -5, 10);
+	glEnd();
+}
+
 void DrawCapybara() {
-	//Comandos para habilitar a transparencia em areas sobrepostas
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//Faces
 	glBegin(GL_QUADS);
-	glColor3f(0.0f + moveX, 0.0f + moveY, 1.0f);
-	glVertex3i(-10 + moveX, -5 + moveY, -10);
-	glVertex3i(10 + moveX, -5 + moveY, -10);
-	glVertex3i(10 + moveX, -5 + moveY, 10);
-	glVertex3i(-10 + moveX, -5 + moveY, 10);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(1.0f + moveX, 0.0f + moveY, 0.0f, 0.5);
-	glVertex3i(10 + moveX, -5 + moveY, -10);
-	glVertex3i(10 + moveX, -5 + moveY, 10);
-	glVertex3i(0 + moveX, 15 + moveY, 0);
+	glColor4f(1.0f, 0.0f, 0.0f, 0.5);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f + moveX, 1.0f + moveY, 0.0f, 0.5);
-	glVertex3i(10 + moveX, -5 + moveY, 10);
-	glVertex3i(-10 + moveX, -5 + moveY, 10);
-	glVertex3i(0 + moveX, 15 + moveY, 0);
+	glColor4f(0.0f, 1.0f, 0.0f, 0.5);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f + moveX, 0.0f + moveY, 1.0f, 0.5);
-	glVertex3i(-10 + moveX, -5 + moveY, -10);
-	glVertex3i(10 + moveX, -5 + moveY, -10);
-	glVertex3i(0 + moveX, 15 + moveY, 0);
+	glColor4f(0.0f, 0.0f, 1.0f, 0.5);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(0.1f + moveX, 0.22f + moveY, 0.5f, 0.5);
-	glVertex3i(-10 + moveX, -5 + moveY, -10);
-	glVertex3i(-10 + moveX, -5 + moveY, 10);
-	glVertex3i(0 + moveX, 15 + moveY, 0);
+	glColor4f(0.1f, 0.22f, 0.5f, 0.5);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
+	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
 	glEnd();
 }
 
@@ -77,11 +121,49 @@ void DrawScene() {
 	glTranslatef(0, 0, 0);
 
 	DrawCapybara();
+
+	glTranslatef(-88, 0, 0);
+	DrawEnemies();
+
+	//for (int i = 0; i < enemiesCount; i++)
+	//{
+	//	DrawEnemies();
+	//	glTranslatef(-88, 0, 0);
+	//}
 }
 
-static void error_callback(int error, const char* description)
+void EnemiesMove() {
+
+	//Enemy velocity must be between 0.5 and 2.5
+
+	if (shoot && movey <= 200) {
+		movey += randVelocity;
+	}
+	else {
+		shoot = false;
+		movey = 0.0;
+	}
+}
+
+void CheckStage() {
+	if (capybaraPositionY >= 120) {
+		stage++;
+		capybaraPositionY = -120;
+
+		cout << "Current stage: " + stage << endl;
+	}
+}
+
+void Init() {
+
+	//Player default's position
+	capybaraPositionX = 0;
+	capybaraPositionY = -100;
+}
+
+static void error_callback(int error, const char* deion)
 {
-	fputs(description, stderr);
+	fputs(deion, stderr);
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -92,23 +174,33 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	//Capybara control
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
-		moveY += 20;
-		cout << moveY << endl;
+		CheckStage();
+		capybaraPositionY += 20;
+		cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
-		moveY -= 20;
-		cout << moveY << endl;
+		capybaraPositionY -= 20;
+		cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
-		moveX -= 20;
-		cout << moveX << endl;
+		if (capybaraPositionX >= -60)
+			capybaraPositionX -= 20;
+
+		cout << capybaraPositionX << endl;
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
-		moveX += 20;
-		cout << moveX << endl;
+		if (capybaraPositionX >= 80)
+			capybaraPositionX -= 20;
+
+		capybaraPositionX += 20;
+		cout << capybaraPositionX << endl;
+	}
+	if (key == GLFW_KEY_SPACE && !shoot) {
+		randVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
+		shoot = true;
 	}
 }
 
@@ -133,6 +225,9 @@ int main()
 
 	glfwSetKeyCallback(window, key_callback);
 
+	Init();
+	SpawnEnemies();
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float ratio;
@@ -151,6 +246,7 @@ int main()
 		glLoadIdentity();
 
 		DrawScene();
+		EnemiesMove();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
