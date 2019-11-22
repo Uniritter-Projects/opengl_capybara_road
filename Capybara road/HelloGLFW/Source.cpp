@@ -149,8 +149,7 @@ void CheckStage() {
 	if (capybaraPositionY >= 120) {
 		stage++;
 		capybaraPositionY = -120;
-
-		cout << "Current stage: " + stage << endl;
+		cout << "Current stage: " << stage << endl;
 	}
 }
 
@@ -176,11 +175,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		CheckStage();
 		capybaraPositionY += 20;
-		cout << capybaraPositionY << endl;
+		//cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
-		capybaraPositionY -= 20;
+		if (capybaraPositionY >= -80)
+			capybaraPositionY -= 20;
+
 		cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
@@ -188,7 +189,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		if (capybaraPositionX >= -60)
 			capybaraPositionX -= 20;
 
-		cout << capybaraPositionX << endl;
+		//cout << capybaraPositionX << endl;
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
@@ -196,7 +197,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			capybaraPositionX -= 20;
 
 		capybaraPositionX += 20;
-		cout << capybaraPositionX << endl;
+		//cout << capybaraPositionX << endl;
 	}
 	if (key == GLFW_KEY_SPACE && !shoot) {
 		randVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
