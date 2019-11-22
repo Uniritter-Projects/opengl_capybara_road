@@ -153,6 +153,12 @@ void CheckStage() {
 	}
 }
 
+void Reestart() {
+	stage = 1;
+	capybaraPositionX = 0;
+	capybaraPositionY = -120;
+}
+
 void Init() {
 
 	//Player default's position
@@ -203,6 +209,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		randVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 		shoot = true;
 	}
+	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
+		Reestart();
 }
 
 int main()
