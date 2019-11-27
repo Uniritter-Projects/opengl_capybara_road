@@ -9,7 +9,11 @@ struct enemy {
 	float velocity;
 };
 
-//Positions
+//Game
+bool shoot;
+int stage = 1;
+
+//Capybara
 float capybaraPositionX;
 float capybaraPositionY;
 
@@ -19,19 +23,15 @@ enemy enemies[enemiesCount];
 float enemyMovie;
 float randEnemyVelocity;
 
-//Game
-bool shoot;
-int stage = 1;
-
-void View() {
+void Camera() {
 	glOrtho(-100, 100, -100, 100, -100, 250);
 	gluLookAt(0, 20, 20, 0, 0, 0, 0, 1, 0);
 }
 
 void SpawnEnemies() {
 
-	// X pos can be -80 or +80
-	// Y mus increase 20 by each point
+	/* X pos can be -80 or +80
+	 Y mus increase 20 by each point */
 
 	float xPos = 0;
 	float yPos = 0;
@@ -79,6 +79,7 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	#pragma region Pyramid
 	//Faces
 	glBegin(GL_QUADS);
 	glColor3f(0.0f, 0.0f, 1.0f);
@@ -115,11 +116,12 @@ void DrawCapybara() {
 	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
 	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
 	glEnd();
+	#pragma endregion
 }
 
 void DrawScene() {
 
-	View();
+	Camera();
 	glTranslatef(0, 0, 0);
 
 	DrawCapybara();
@@ -135,7 +137,6 @@ void DrawScene() {
 }
 
 void EnemiesMove() {
-
 	//Enemy velocity must be between 0.5 and 2.5
 
 	if (shoot && enemyMovie <= 200) {
@@ -149,6 +150,7 @@ void EnemiesMove() {
 
 void CheckStage() {
 	if (capybaraPositionY >= 120) {
+		SpawnEnemies();
 		stage++;
 		capybaraPositionY = -120;
 		cout << "Current stage: " << stage << endl;
@@ -164,7 +166,6 @@ void Reestart() {
 }
 
 void Init() {
-
 	//Player default's position
 	capybaraPositionX = 0;
 	capybaraPositionY = -100;
@@ -177,8 +178,13 @@ static void error_callback(int error, const char* deion)
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	//Game control
+	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
+		Reestart();
+	}
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
 
 	//Capybara control
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
@@ -190,8 +196,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		if (capybaraPositionY >= -80)
 			capybaraPositionY -= 20;
-
-		cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
@@ -206,14 +210,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		capybaraPositionX += 20;
 	}
 	if (key == GLFW_KEY_SPACE && !shoot) {
+		//Mocking event to spawn enemy
 		randEnemyVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 		shoot = true;
-
-		float randValue = 0 + rand() % ((1 + 1) - 0);
-		cout << "Rand: " << randValue << endl;
 	}
-	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
-		Reestart();
 }
 
 int main()
