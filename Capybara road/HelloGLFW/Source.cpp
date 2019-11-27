@@ -25,7 +25,7 @@ float capybaraPositionX;
 float capybaraPositionY;
 
 //Enemies
-const int enemiesCount = 3;
+const int enemiesCount = 10;
 enemy enemies[enemiesCount];
 
 float alvox = 0;
@@ -47,15 +47,34 @@ void View() {
 
 void SpawnEnemies() {
 
-	float xPos = -80;
+	// X pos can be -80 or +80
+	// Y mus increase 20 by each point
+
+	float xPos = 0;
 	float yPos = 0;
 
 	for (int i = 0; i < enemiesCount; i++)
 	{
+		float randValue = 0 + rand() % ((1 + 1) - 0);
+
+		if (randValue != 0) {
+			enemies[i].direction = 'r';
+			xPos = -80;
+		}
+		else {
+			enemies[i].direction = 'l';
+			xPos = +80;
+		}
+
 		enemies[i].xPos = xPos;
 		enemies[i].yPos = yPos;
 
-		yPos = yPos + 20;
+		yPos += 20;
+
+		cout << "Spawn point " << i << endl;
+		cout << "X:  " << xPos << endl;
+		cout << "Y:  " << yPos << endl;
+		cout << "----------" << endl;
 	}
 }
 
@@ -181,7 +200,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		CheckStage();
 		capybaraPositionY += 20;
-		//cout << capybaraPositionY << endl;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
@@ -194,8 +212,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		if (capybaraPositionX >= -60)
 			capybaraPositionX -= 20;
-
-		//cout << capybaraPositionX << endl;
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
@@ -203,11 +219,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			capybaraPositionX -= 20;
 
 		capybaraPositionX += 20;
-		//cout << capybaraPositionX << endl;
 	}
 	if (key == GLFW_KEY_SPACE && !shoot) {
 		randVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 		shoot = true;
+
+		float randValue = 0 + rand() % ((1 + 1) - 0);
+		cout << "Rand: " << randValue << endl;
 	}
 	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
 		Reestart();
