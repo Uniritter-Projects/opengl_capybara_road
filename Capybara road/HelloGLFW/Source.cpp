@@ -9,17 +9,6 @@ struct enemy {
 	float velocity;
 };
 
-float xMin = -1.0, xMax = 1.0, yMin = -1.0, yMax = 1.0;
-
-float posx = 0;
-float posy = 20;
-float posz = 20;
-
-float ang = 0.0;
-float angX = 0.0;
-float angY = 0.0;
-float angZ = 0.0;
-
 //Positions
 float capybaraPositionX;
 float capybaraPositionY;
@@ -27,22 +16,16 @@ float capybaraPositionY;
 //Enemies
 const int enemiesCount = 10;
 enemy enemies[enemiesCount];
+float enemyMovie;
+float randEnemyVelocity;
 
-float alvox = 0;
-float alvoy = 0;
-float alvoz = 0;
-
+//Game
 bool shoot;
-float movey;
-float randVelocity;
 int stage = 1;
 
 void View() {
-
 	glOrtho(-100, 100, -100, 100, -100, 250);
-
-	//Posição da camera
-	gluLookAt(posx, posy, posz, alvox, alvoy, alvoz, 0, 1, 0);
+	gluLookAt(0, 20, 20, 0, 0, 0, 0, 1, 0);
 }
 
 void SpawnEnemies() {
@@ -85,10 +68,10 @@ void DrawEnemies() {
 
 	//Faces
 	glBegin(GL_QUADS);
-	glVertex3i(-10 + +movey, -5, -10);
-	glVertex3i(10 + movey, -5, -10);
-	glVertex3i(10 + movey, -5, 10);
-	glVertex3i(-10 + movey, -5, 10);
+	glVertex3i(-10 + enemyMovie, -5, -10);
+	glVertex3i(10 + enemyMovie, -5, -10);
+	glVertex3i(10 + enemyMovie, -5, 10);
+	glVertex3i(-10 + enemyMovie, -5, 10);
 	glEnd();
 }
 
@@ -155,12 +138,12 @@ void EnemiesMove() {
 
 	//Enemy velocity must be between 0.5 and 2.5
 
-	if (shoot && movey <= 200) {
-		movey += randVelocity;
+	if (shoot && enemyMovie <= 200) {
+		enemyMovie += randEnemyVelocity;
 	}
 	else {
 		shoot = false;
-		movey = 0.0;
+		enemyMovie = 0.0;
 	}
 }
 
@@ -173,6 +156,8 @@ void CheckStage() {
 }
 
 void Reestart() {
+	//Set game as defaul
+	SpawnEnemies();
 	stage = 1;
 	capybaraPositionX = 0;
 	capybaraPositionY = -120;
@@ -221,7 +206,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		capybaraPositionX += 20;
 	}
 	if (key == GLFW_KEY_SPACE && !shoot) {
-		randVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
+		randEnemyVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 		shoot = true;
 
 		float randValue = 0 + rand() % ((1 + 1) - 0);
