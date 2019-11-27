@@ -9,19 +9,23 @@ struct enemy {
 	float velocity;
 };
 
+struct capybara {
+	int xPos;
+	int yPos;
+};
+
 //Game
 bool shoot;
 int stage = 1;
 
 //Capybara
-float capybaraPositionX;
-float capybaraPositionY;
+capybara capybaraEntity;
 
 //Enemies
 const int enemiesCount = 10;
-enemy enemies[enemiesCount];
-float enemyMovie;
+float enemyMove;
 float randEnemyVelocity;
+enemy enemies[enemiesCount];
 
 void Camera() {
 	glOrtho(-100, 100, -100, 100, -100, 250);
@@ -68,10 +72,10 @@ void DrawEnemies() {
 
 	//Faces
 	glBegin(GL_QUADS);
-	glVertex3i(-10 + enemyMovie, -5, -10);
-	glVertex3i(10 + enemyMovie, -5, -10);
-	glVertex3i(10 + enemyMovie, -5, 10);
-	glVertex3i(-10 + enemyMovie, -5, 10);
+	glVertex3i(-10 + enemyMove, -5, -10);
+	glVertex3i(10 + enemyMove, -5, -10);
+	glVertex3i(10 + enemyMove, -5, 10);
+	glVertex3i(-10 + enemyMove, -5, 10);
 	glEnd();
 }
 
@@ -79,44 +83,44 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	#pragma region Pyramid
+#pragma region Pyramid
 	//Faces
 	glBegin(GL_QUADS);
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
 	glColor4f(1.0f, 0.0f, 0.0f, 0.5);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
-	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
 	glColor4f(0.0f, 1.0f, 0.0f, 0.5);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, 10);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
-	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
 	glColor4f(0.0f, 0.0f, 1.0f, 0.5);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLES);
 	glColor4f(0.1f, 0.22f, 0.5f, 0.5);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, -10);
-	glVertex3i(-10 + capybaraPositionX, -5 + capybaraPositionY, 10);
-	glVertex3i(0 + capybaraPositionX, 15 + capybaraPositionY, 0);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
 	glEnd();
-	#pragma endregion
+#pragma endregion
 }
 
 void DrawScene() {
@@ -138,21 +142,20 @@ void DrawScene() {
 
 void EnemiesMove() {
 	//Enemy velocity must be between 0.5 and 2.5
-
-	if (shoot && enemyMovie <= 200) {
-		enemyMovie += randEnemyVelocity;
+	if (shoot && enemyMove <= 200) {
+		enemyMove += randEnemyVelocity;
 	}
 	else {
 		shoot = false;
-		enemyMovie = 0.0;
+		enemyMove = 0.0;
 	}
 }
 
 void CheckStage() {
-	if (capybaraPositionY >= 120) {
+	if (capybaraEntity.yPos >= 120) {
 		SpawnEnemies();
 		stage++;
-		capybaraPositionY = -120;
+		capybaraEntity.yPos = -120;
 		cout << "Current stage: " << stage << endl;
 	}
 }
@@ -161,14 +164,18 @@ void Reestart() {
 	//Set game as defaul
 	SpawnEnemies();
 	stage = 1;
-	capybaraPositionX = 0;
-	capybaraPositionY = -120;
+	capybaraEntity.xPos = 0;
+	capybaraEntity.yPos = -120;
 }
 
 void Init() {
 	//Player default's position
-	capybaraPositionX = 0;
-	capybaraPositionY = -100;
+	capybaraEntity.xPos = 0;
+	capybaraEntity.yPos = -100;
+}
+
+void Collision() {
+	//Check if capybara and enemy position are the same, then reestart the game
 }
 
 static void error_callback(int error, const char* deion)
@@ -190,24 +197,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
 		CheckStage();
-		capybaraPositionY += 20;
+		capybaraEntity.yPos += 20;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
-		if (capybaraPositionY >= -80)
-			capybaraPositionY -= 20;
+		if (capybaraEntity.yPos >= -80)
+			capybaraEntity.yPos -= 20;
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
-		if (capybaraPositionX >= -60)
-			capybaraPositionX -= 20;
+		if (capybaraEntity.xPos >= -60)
+			capybaraEntity.xPos -= 20;
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
-		if (capybaraPositionX >= 80)
-			capybaraPositionX -= 20;
+		if (capybaraEntity.xPos >= 80)
+			capybaraEntity.xPos -= 20;
 
-		capybaraPositionX += 20;
+		capybaraEntity.xPos += 20;
 	}
 	if (key == GLFW_KEY_SPACE && !shoot) {
 		//Mocking event to spawn enemy
@@ -259,6 +266,7 @@ int main()
 
 		DrawScene();
 		EnemiesMove();
+		Collision();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
