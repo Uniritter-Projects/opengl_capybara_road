@@ -98,6 +98,15 @@ void DrawCapybara() {
 		glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
 		glEnd();
 
+		//Old size (in case to collision study)
+		//glBegin(GL_QUADS);
+		//glColor3f(0.25f, 0.1f, 0.13f);
+		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		//glEnd();
+
 		//glBegin(GL_TRIANGLES);
 		//glColor4f(1.0f, 0.0f, 0.0f, 0.5);
 		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
@@ -141,7 +150,7 @@ void CarsMove() {
 	{
 		if (cars[i].direction == 'r')
 		{
-			if (cars[i].spawn && cars[i].carMove <= 200)
+			if (cars[i].spawn && cars[i].carMove <= 250)
 				cars[i].carMove += cars[i].velocity;
 			else {
 				cars[i].spawn = false;
@@ -151,7 +160,7 @@ void CarsMove() {
 		}
 		else if (cars[i].direction == 'l')
 		{
-			if (cars[i].spawn && cars[i].carMove >= -200)
+			if (cars[i].spawn && cars[i].carMove >= -250)
 				cars[i].carMove -= cars[i].velocity;
 			else {
 				cars[i].spawn = false;
