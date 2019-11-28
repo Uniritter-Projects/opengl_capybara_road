@@ -2,11 +2,12 @@
 #include "Render.h"
 using namespace std;
 
-struct enemy {
+struct car {
+	char direction;
 	int xPos;
 	int yPos;
-	char direction;
-	float velocity;
+	float carMove;
+	float velocity;		//Not in use yet
 };
 
 struct capybara {
@@ -14,18 +15,18 @@ struct capybara {
 	int yPos;
 };
 
-//Game
-bool shoot;
+//Game mechanics
+bool run;
 int stage = 1;
 
 //Capybara
 capybara capybaraEntity;
 
-//Enemies
-const int enemiesCount = 10;
-float enemyMove;
-float randEnemyVelocity;
-enemy enemies[enemiesCount];
+//Cars
+const int carsCount = 6;
+float carMove;
+float randCarVelocity;
+car cars[carsCount];
 
 void Camera() {
 	glOrtho(-100, 100, -100, 100, -100, 250);
@@ -34,29 +35,30 @@ void Camera() {
 
 void SpawnEnemies() {
 
-	/* X pos can be -80 or +80
-	 Y mus increase 20 by each point */
+	// X pos can be -80 or +80
+	// Y mus increase 20 by each point
+	// 10 cars
 
 	float xPos = 0;
-	float yPos = 0;
+	float yPos = 70;
 
-	for (int i = 0; i < enemiesCount; i++)
+	for (int i = 0; i < carsCount; i++)
 	{
 		float randValue = 0 + rand() % ((1 + 1) - 0);
 
 		if (randValue != 0) {
-			enemies[i].direction = 'r';
-			xPos = -80;
+			cars[i].direction = 'r';
+			xPos = -90;
 		}
 		else {
-			enemies[i].direction = 'l';
-			xPos = +80;
+			cars[i].direction = 'l';
+			xPos = +70;
 		}
 
-		enemies[i].xPos = xPos;
-		enemies[i].yPos = yPos;
+		cars[i].xPos = xPos;
+		cars[i].yPos = yPos;
 
-		yPos += 20;
+		yPos -= 40;
 
 		cout << "Spawn point " << i << endl;
 		cout << "X:  " << xPos << endl;
@@ -70,85 +72,122 @@ void DrawEnemies() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1, 0, 0, 1.0f);
 
-	//Faces
-	glBegin(GL_QUADS);
-	glVertex3i(-10 + enemyMove, -5, -10);
-	glVertex3i(10 + enemyMove, -5, -10);
-	glVertex3i(10 + enemyMove, -5, 10);
-	glVertex3i(-10 + enemyMove, -5, 10);
-	glEnd();
+	for (int i = 0; i < carsCount; i++)
+	{
+		glBegin(GL_QUADS);
+		glVertex3i(cars[i].xPos + cars[i].carMove, -5, cars[i].yPos);
+		glVertex3i((cars[i].xPos + 20) + cars[i].carMove, -5, cars[i].yPos);
+		glVertex3i((cars[i].xPos + 20) + cars[i].carMove, -5, (cars[i].yPos + 20));
+		glVertex3i(cars[i].xPos + cars[i].carMove, -5, (cars[i].yPos + 20));
+		glEnd();
+	}
 }
 
 void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-#pragma region Pyramid
-	//Faces
-	glBegin(GL_QUADS);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glEnd();
+	#pragma region Pyramid
+		//Faces
+		glBegin(GL_QUADS);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	glColor4f(1.0f, 0.0f, 0.0f, 0.5);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor4f(1.0f, 0.0f, 0.0f, 0.5);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f, 1.0f, 0.0f, 0.5);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor4f(0.0f, 1.0f, 0.0f, 0.5);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	glColor4f(0.0f, 0.0f, 1.0f, 0.5);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor4f(0.0f, 0.0f, 1.0f, 0.5);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	glColor4f(0.1f, 0.22f, 0.5f, 0.5);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	glEnd();
-#pragma endregion
+		glBegin(GL_TRIANGLES);
+		glColor4f(0.1f, 0.22f, 0.5f, 0.5);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+		glEnd();
+	#pragma endregion
 }
 
 void DrawScene() {
 
 	Camera();
-	glTranslatef(0, 0, 0);
-
 	DrawCapybara();
-
-	glTranslatef(-88, 0, 0);
 	DrawEnemies();
-
-	//for (int i = 0; i < enemiesCount; i++)
-	//{
-	//	DrawEnemies();
-	//	glTranslatef(-88, 0, 0);
-	//}
 }
 
 void EnemiesMove() {
-	//Enemy velocity must be between 0.5 and 2.5
-	if (shoot && enemyMove <= 200) {
-		enemyMove += randEnemyVelocity;
+
+	for (int i = 0; i < carsCount; i++)
+	{
+		//Need to back to default position
+		int initialPosition = cars[i].xPos;
+
+		if (cars[i].direction == 'r')
+		{
+			if (run && cars[i].carMove <= 100)
+			{
+				cars[i].carMove += randCarVelocity;
+				cars[i].xPos = carMove;
+			}
+			else {
+				run = false;
+				cars[i].carMove = initialPosition;
+			}
+		}
+		else if (cars[i].direction == 'l') 
+		{
+			if (run && cars[i].carMove >= -100)
+			{
+				cars[i].carMove -= randCarVelocity;
+				cars[i].xPos = carMove;
+			}
+			else {
+				run = false;
+				cars[i].carMove = initialPosition;
+			}
+		}
+		//if (shoot && carMove <= 200) {
+		//	carMove += randCarVelocity;
+		//	cars[0].xPos = carMove;
+		//	//enemies[0].yPos = enemyMove;
+		//}
+		//else {
+		//	shoot = false;
+		//	carMove = 0.0;
+		//}
 	}
-	else {
-		shoot = false;
-		enemyMove = 0.0;
-	}
+
+	// Single car move
+
+	//int initial = -80;
+	//if (run && carMove <= 100) {
+	//	carMove += randCarVelocity;
+	//	cars[0].xPos = carMove;
+	//}
+	//else {
+	//	run = false;
+	//	carMove = 0.0;
+	//	cars[0].xPos = initial;
+	//}
 }
 
 void CheckStage() {
@@ -176,6 +215,21 @@ void Init() {
 
 void Collision() {
 	//Check if capybara and enemy position are the same, then reestart the game
+	//for (int i = 0; i < carsCount; i++)
+	//{
+	//	if ((cars[i].xPos == capybaraEntity.xPos ) && (cars[i].yPos == capybaraEntity.yPos))
+	//	{
+	//		Reestart();
+	//		cout << "********************DEAD********************" << endl;
+	//	}
+	//}
+}
+
+void DebugCapPosition() {
+	cout << "----------------------------" << endl;
+	cout << "Cap X pos: " << capybaraEntity.xPos << endl;
+	cout << "Cap Y pos:	" << capybaraEntity.yPos << endl;
+	cout << "----------------------------" << endl;
 }
 
 static void error_callback(int error, const char* deion)
@@ -198,16 +252,22 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		CheckStage();
 		capybaraEntity.yPos += 20;
+
+		//DebugCapPosition();
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 	{
 		if (capybaraEntity.yPos >= -80)
 			capybaraEntity.yPos -= 20;
+
+		//DebugCapPosition();
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
 		if (capybaraEntity.xPos >= -60)
 			capybaraEntity.xPos -= 20;
+
+		//DebugCapPosition();
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
@@ -215,11 +275,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			capybaraEntity.xPos -= 20;
 
 		capybaraEntity.xPos += 20;
+
+		//DebugCapPosition();
 	}
-	if (key == GLFW_KEY_SPACE && !shoot) {
+	if (key == GLFW_KEY_SPACE && !run) {
 		//Mocking event to spawn enemy
-		randEnemyVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
-		shoot = true;
+		randCarVelocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
+		run = true;
 	}
 }
 
