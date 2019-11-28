@@ -91,11 +91,11 @@ void DrawCapybara() {
 	#pragma region Pyramid
 		//Faces
 		glBegin(GL_QUADS);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+		glColor3f(0.25f, 0.1f, 0.13f);
+		glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
+		glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
+		glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
+		glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
 		glEnd();
 
 		//glBegin(GL_TRIANGLES);
