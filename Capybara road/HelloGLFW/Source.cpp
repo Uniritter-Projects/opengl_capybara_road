@@ -9,6 +9,7 @@ struct car {
 	float carMove;
 	float velocity;
 	bool spawn = true;
+	float rgb[3] = {0, 0, 0};
 };
 
 struct capybara {
@@ -61,20 +62,23 @@ void SpawnCars() {
 
 		yPos -= 40;
 
-		cout << "Spawn point " << i << endl;
-		cout << "X:  " << xPos << endl;
-		cout << "Y:  " << yPos << endl;
-		cout << "----------" << endl;
+		//Debug spawn points
+		//cout << "Spawn point " << i << endl;
+		//cout << "X:  " << xPos << endl;
+		//cout << "Y:  " << yPos << endl;
+		//cout << "----------" << endl;
 	}
 }
 
 void DrawCars() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4f(1, 0, 0, 1.0f);
+	glColor4f(0, 0, 0, 1.0f);
 
 	for (int i = 0; i < carsCount; i++)
 	{
+		glColor4f(cars[i].rgb[0], cars[i].rgb[1], cars[i].rgb[2], 1.0f);
+
 		glBegin(GL_QUADS);
 		glVertex3i(cars[i].xPos + cars[i].carMove, -5, cars[i].yPos);
 		glVertex3i((cars[i].xPos + 20) + cars[i].carMove, -5, cars[i].yPos);
@@ -138,7 +142,6 @@ void DrawCapybara() {
 }
 
 void DrawScene() {
-
 	Camera();
 	DrawCapybara();
 	DrawCars();
@@ -153,6 +156,7 @@ void CarsMove() {
 			if (cars[i].spawn && cars[i].carMove <= 250)
 				cars[i].carMove += cars[i].velocity;
 			else {
+				//Receive new velocity
 				cars[i].spawn = false;
 				cars[i].carMove = 0;
 				cars[i].spawn = true;
@@ -163,6 +167,7 @@ void CarsMove() {
 			if (cars[i].spawn && cars[i].carMove >= -250)
 				cars[i].carMove -= cars[i].velocity;
 			else {
+				//Receive new velocity
 				cars[i].spawn = false;
 				cars[i].carMove = 0;
 				cars[i].spawn = true;
@@ -195,12 +200,27 @@ void Init() {
 
 	for (int i = 0; i < carsCount; i++)
 	{
+		cars[i].rgb[0] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+		cars[i].rgb[1] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+		cars[i].rgb[2] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+
 		cars[i].velocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 		cars[i].spawn = true;
 	}
 }
 
 void Collision() {
+
+	//Debug collision pos
+	//for (int i = 0; i < carsCount; i++)
+	//{
+	//	glPointSize(5);
+	//	glColor3f(0, 0, 1);
+	//	glBegin(GL_POINTS);
+	//	glVertex2f(cars[i].xPos, cars[i].yPos);
+	//	glEnd();
+	//}
+
 	//Check if capybara and enemy position are the same, then reestart the game
 	for (int i = 0; i < carsCount; i++)
 	{
@@ -290,7 +310,6 @@ int main()
 
 	Init();
 	SpawnCars();
-	Collision();
 
 	while (!glfwWindowShouldClose(window))
 	{
