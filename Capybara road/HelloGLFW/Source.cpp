@@ -265,28 +265,28 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 
 	//Capybara control
-	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
 	{
 		CheckStage();
 		capybaraEntity.yPos += 20;
 
 		//DebugCapPosition();
 	}
-	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
 	{
 		if (capybaraEntity.yPos >= -80)
 			capybaraEntity.yPos -= 20;
 
 		//DebugCapPosition();
 	}
-	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
 	{
 		if (capybaraEntity.xPos >= -60)
 			capybaraEntity.xPos -= 20;
 
 		//DebugCapPosition();
 	}
-	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	if ((key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) && action == GLFW_PRESS)
 	{
 		if (capybaraEntity.xPos >= 80)
 			capybaraEntity.xPos -= 20;
