@@ -9,7 +9,7 @@ struct car {
 	float carMove;
 	float velocity;
 	bool spawn = true;
-	float rgb[3] = {0, 0, 0};
+	float rgb[3] = { 0, 0, 0 };
 };
 
 struct capybara {
@@ -92,59 +92,66 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	#pragma region Pyramid
-		//Faces
-		glBegin(GL_QUADS);
-		glColor3f(0.25f, 0.1f, 0.13f);
-		glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
-		glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
-		glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
-		glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
-		glEnd();
+#pragma region Pyramid
+	//Faces
+	glBegin(GL_QUADS);
+	glColor3f(0.25f, 0.1f, 0.13f);
+	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
+	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
+	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
+	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
+	glEnd();
 
-		//Old size (in case to collision study)
-		//glBegin(GL_QUADS);
-		//glColor3f(0.25f, 0.1f, 0.13f);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glEnd();
+	//Old size (in case to collision study)
+	//glBegin(GL_QUADS);
+	//glColor3f(0.25f, 0.1f, 0.13f);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glEnd();
 
-		//glBegin(GL_TRIANGLES);
-		//glColor4f(1.0f, 0.0f, 0.0f, 0.5);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-		//glEnd();
+	//glBegin(GL_TRIANGLES);
+	//glColor4f(1.0f, 0.0f, 0.0f, 0.5);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+	//glEnd();
 
-		//glBegin(GL_TRIANGLES);
-		//glColor4f(0.0f, 1.0f, 0.0f, 0.5);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-		//glEnd();
+	//glBegin(GL_TRIANGLES);
+	//glColor4f(0.0f, 1.0f, 0.0f, 0.5);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+	//glEnd();
 
-		//glBegin(GL_TRIANGLES);
-		//glColor4f(0.0f, 0.0f, 1.0f, 0.5);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-		//glEnd();
+	//glBegin(GL_TRIANGLES);
+	//glColor4f(0.0f, 0.0f, 1.0f, 0.5);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+	//glEnd();
 
-		//glBegin(GL_TRIANGLES);
-		//glColor4f(0.1f, 0.22f, 0.5f, 0.5);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-		//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-		//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-		//glEnd();
-	#pragma endregion
+	//glBegin(GL_TRIANGLES);
+	//glColor4f(0.1f, 0.22f, 0.5f, 0.5);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
+	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
+	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
+	//glEnd();
+#pragma endregion
 }
 
 void DrawScene() {
 	Camera();
 	DrawCapybara();
 	DrawCars();
+}
+
+void NewCar(int carIndex) {
+	cars[carIndex].rgb[0] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+	cars[carIndex].rgb[1] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+	cars[carIndex].rgb[2] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+	cars[carIndex].velocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
 }
 
 void CarsMove() {
@@ -157,6 +164,7 @@ void CarsMove() {
 				cars[i].carMove += cars[i].velocity;
 			else {
 				//Receive new velocity
+				NewCar(i);
 				cars[i].spawn = false;
 				cars[i].carMove = 0;
 				cars[i].spawn = true;
@@ -168,6 +176,7 @@ void CarsMove() {
 				cars[i].carMove -= cars[i].velocity;
 			else {
 				//Receive new velocity
+				NewCar(i);
 				cars[i].spawn = false;
 				cars[i].carMove = 0;
 				cars[i].spawn = true;
