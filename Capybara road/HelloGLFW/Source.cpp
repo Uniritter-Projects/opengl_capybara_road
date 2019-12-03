@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Render.h"
+#include<time.h> 
 using namespace std;
 
 struct car {
@@ -7,21 +8,20 @@ struct car {
 	int xPos;
 	int yPos;
 	float velocity;
-	int xSize = 20;
-	int ySize = 20;
-	bool spawn = true;
+	int xSize = 15;
+	int ySize = 15;
+	bool spawn = false;
 	float rgb[3] = { 0, 0, 0 };
 };
 
 struct capybara {
 	int xPos;
 	int yPos;
-	int xSize = 5;
-	int ySize = 8;
+	int xSize = 2;
+	int ySize = 5;
 };
 
 //Game mechanics
-bool run;
 int stage = 1;
 
 //Capybara
@@ -33,31 +33,110 @@ float carMove;
 float randCarVelocity;
 car cars[carsCount];
 
+void DrawCube(float r, float g, float b) {
+	//Comandos para habilitar a transparencia em areas sobrepostas
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//Base
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3i(-10, -5, -10);
+	glVertex3i(10, -5, -10);
+	glVertex3i(10, -5, 10);
+	glVertex3i(-10, -5, 10);
+	glEnd();
+
+	//Top
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3i(-10, -25, -10);
+	glVertex3i(10, -25, -10);
+	glVertex3i(10, -25, 10);
+	glVertex3i(-10, -25, 10);
+	glEnd();
+
+	//Left
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3i(10, -5, -10);
+	glVertex3i(-10, -5, -10);
+	glVertex3i(-10, -25, -10);
+	glVertex3i(10, -25, -10);
+	glEnd();
+
+	//Right
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3i(-10, -5, 10);
+	glVertex3i(10, -5, 10);
+	glVertex3i(10, -25, 10);
+	glVertex3i(-10, -25, 10);
+	glEnd();
+
+	//Right 2
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3i(-10, -25, 10);
+	glVertex3i(-10, -25, -10);
+	glVertex3i(-10, -5, -10);
+	glVertex3i(-10, -5, 10);
+	glEnd();
+
+	//glPointSize(5);
+	//glColor3f(1, 1, 1);
+	//glBegin(GL_POINTS);
+	//glVertex3i(-10, -5, 10);
+	//glEnd();
+
+	//glPointSize(5);
+	//glColor3f(1, 1, 1);
+	//glBegin(GL_POINTS);
+	//glVertex3i(-10, -25, 10);
+	//glEnd();
+
+	//glPointSize(5);
+	//glColor3f(1, 1, 1);
+	//glBegin(GL_POINTS);
+	//glVertex3i(-10, -5, 10);
+	//glEnd();
+
+	//glPointSize(5);
+	//glColor3f(1, 1, 1);
+	//glBegin(GL_POINTS);
+	//glVertex3i(10, -25, -10);
+	//glEnd();
+}
+
 void Camera() {
 	glOrtho(-100, 100, -100, 100, -100, 250);
 	gluLookAt(0, 20, 20, 0, 0, 0, 0, 1, 0);
 }
 
-void SpawnCars() {
+void SetSpawnPoints() {
 
 	float xPos = 0;
 	float yPos = 70;
 
 	for (int i = 0; i < carsCount; i++)
-	{
+	{		
 		float randValue = 0 + rand() % ((1 + 1) - 0);
 
 		if (randValue != 0) {
 			cars[i].direction = 'r';
-			xPos = -110;
+			xPos = -(rand() % 50 + 110);
 		}
 		else {
 			cars[i].direction = 'l';
-			xPos = +110;
+			xPos = +(rand() % 50 + 110);
 		}
 
 		cars[i].xPos = xPos;
 		cars[i].yPos = yPos + (-20 * i);
+
+		//cars[i].velocity = (2.0 - 0.5) * ((((float)rand()) / (float)RAND_MAX)) + 1.0;
+		cars[i].velocity = rand() % 2 + 1;
+
 		//yPos -= 40;
 	}
 }
@@ -84,7 +163,7 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-#pragma region Pyramid
+	#pragma region Pyramid
 	//Faces
 	glBegin(GL_QUADS);
 	glColor3f(0.25f, 0.1f, 0.13f);
@@ -94,60 +173,30 @@ void DrawCapybara() {
 	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
 	glEnd();
 
-	//Old size (in case to collision study)
-	//glBegin(GL_QUADS);
-	//glColor3f(0.25f, 0.1f, 0.13f);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glEnd();
-
-	//glBegin(GL_TRIANGLES);
-	//glColor4f(1.0f, 0.0f, 0.0f, 0.5);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	//glEnd();
-
-	//glBegin(GL_TRIANGLES);
-	//glColor4f(0.0f, 1.0f, 0.0f, 0.5);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	//glEnd();
-
-	//glBegin(GL_TRIANGLES);
-	//glColor4f(0.0f, 0.0f, 1.0f, 0.5);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	//glEnd();
-
-	//glBegin(GL_TRIANGLES);
-	//glColor4f(0.1f, 0.22f, 0.5f, 0.5);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -10);
-	//glVertex3i(-10 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 10);
-	//glVertex3i(0 + capybaraEntity.xPos, 15 + capybaraEntity.yPos, 0);
-	//glEnd();
 #pragma endregion
-}
-
-void DrawScene() {
-	Camera();
-	DrawCapybara();
-	DrawCars();
 }
 
 void NewCar(int carIndex) {
 
-	cars[carIndex].rgb[0] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
-	cars[carIndex].rgb[1] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
-	cars[carIndex].rgb[2] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
+	float randValue = 0 + rand() % ((1 + 1) - 0);
 
-	cars[carIndex].velocity = (2.5f - 1.0f) * ((((float)rand()) / (float)RAND_MAX)) + 1.0f;
+	if (randValue != 0) {
+		cars[carIndex].direction = 'r';
+		cars[carIndex].xPos = -(rand() % 50 + 110);
+	}
+	else {
+		cars[carIndex].direction = 'l';
+		cars[carIndex].xPos = +(rand() % 50 + 110);
+	}
 
-	cout << "Velocity " << carIndex << " :" << cars[carIndex].velocity << endl;
+	//Change color
+	cars[carIndex].rgb[0] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
+	cars[carIndex].rgb[1] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
+	cars[carIndex].rgb[2] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
+
+	//New velocity ta me escutando
+	//cars[carIndex].velocity = (1.0 - 0.5) * ((((float)rand()) / (float)RAND_MAX)) + 0.5;
+	cars[carIndex].velocity = rand() %  2 + 1; 
 }
 
 void CarsMove() {
@@ -157,37 +206,42 @@ void CarsMove() {
 		if (cars[i].direction == 'r')
 		{
 			if (cars[i].spawn && cars[i].xPos <= 110) {
-				cars[i].xPos += 1;
-				//cars[i].xPos += cars[i].velocity;
-				//Fixe rand velocity
+					
+					//cars[i].xPos += 2;
+					cars[i].xPos += cars[i].velocity;
 			}
 			else {
 				NewCar(i);
 				cars[i].spawn = false;
-				cars[i].xPos = -110;
 				cars[i].spawn = true;
 			}
 		}
 		else if (cars[i].direction == 'l')
 		{
 			if (cars[i].spawn && cars[i].xPos >= -110) {
-				cars[i].xPos -= 1;
-				//cars[i].xPos += cars[i].velocity;
-				//Fixe rand velocity
+
+					//cars[i].xPos -= 2;
+					cars[i].xPos -= cars[i].velocity;
 			}
 			else {
 				NewCar(i);
 				cars[i].spawn = false;
-				cars[i].xPos = 110;
 				cars[i].spawn = true;
 			}
 		}
 	}
 }
 
+void DrawScene() {
+	Camera();
+	DrawCapybara();
+	DrawCars();
+	CarsMove();
+}
+
 void CheckStage() {
 	if (capybaraEntity.yPos >= 120) {
-		SpawnCars();
+		SetSpawnPoints();
 		stage++;
 		capybaraEntity.yPos = -120;
 		cout << "Current stage: " << stage << endl;
@@ -195,27 +249,31 @@ void CheckStage() {
 }
 
 void Restart() {
-	//Set game as defaul
-	SpawnCars();
+	//Set game as default
+	SetSpawnPoints();
 	stage = 1;
 	capybaraEntity.xPos = 0;
 	capybaraEntity.yPos = -120;
 }
 
 void Init() {
+	srand(time(NULL));
+
 	//Player default's position
 	capybaraEntity.xPos = 0;
 	capybaraEntity.yPos = -100;
 
 	for (int i = 0; i < carsCount; i++)
 	{
+		//Setting colors
 		cars[i].rgb[0] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
 		cars[i].rgb[1] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
 		cars[i].rgb[2] = (1 - 0) * ((((float)rand()) / (float)RAND_MAX)) + 0;
 
-		cars[i].velocity = (2.5f - 0.5f) * ((((float)rand()) / (float)RAND_MAX)) + 0.5f;
-
-		cout << "Velocity " << i << " :" << cars[i].velocity << endl;
+		for (int i = 0; i < carsCount; i++)
+		{
+			cars[i].velocity = (6 - 1) * ((((float)rand()) / (float)RAND_MAX)) + 1;
+		}
 
 		cars[i].spawn = true;
 	}
@@ -329,7 +387,7 @@ int main()
 	glfwSetKeyCallback(window, key_callback);
 
 	Init();
-	SpawnCars();
+	SetSpawnPoints();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -349,7 +407,6 @@ int main()
 		glLoadIdentity();
 
 		DrawScene();
-		CarsMove();
 		Collision();
 
 		glfwSwapBuffers(window);
