@@ -63,7 +63,6 @@ void DrawCapybara3D(float r, float g, float b) {
 	glVertex3f(-5.0f, 5.0f, -10.0f);
 	glVertex3f(15.0f, 5.0f, -10.0f);
 
-
 	glColor3f(r, g, b);
 	glVertex3f(-5.0f, 5.0f, 10.0f);
 	glVertex3f(-5.0f, 5.0f, -10.0f);
@@ -198,8 +197,8 @@ void DrawCube(float r, float g, float b) {
 }
 
 void Camera() {
-	glOrtho(-100, 100, -100, 100, -100, 250);
-	gluLookAt(0, 20, 20, 0, 0, 0, 0, 1, 0);
+	glOrtho(-100, 100, -100, 100, -100, 237);
+	gluLookAt(2, 20, 20, 0, 0, 0, 0, 1, 0);
 }
 
 void SetSpawnPoints() {
@@ -258,6 +257,38 @@ void DrawCapybara() {
 	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
 	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
 	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
 	glEnd();
 
 #pragma endregion
