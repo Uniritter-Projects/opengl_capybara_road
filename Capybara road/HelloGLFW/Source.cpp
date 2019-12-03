@@ -33,6 +33,95 @@ float carMove;
 float randCarVelocity;
 car cars[carsCount];
 
+void DrawCapybara3D(float r, float g, float b) {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBegin(GL_QUADS);
+	glColor3f(r, g, b);
+	glVertex3f(15.0f, 5.0f, -10.0f);
+	glVertex3f(-5.0f, 5.0f, -10.0f);
+	glVertex3f(-5.0f, 5.0f, 10.0f);
+	glVertex3f(15.0f, 5.0f, 10.0f);
+
+	glColor3f(r, g, b);
+	glVertex3f(15.0f, -5.0f, 10.0f);
+	glVertex3f(-5.0f, -5.0f, 10.0f);
+	glVertex3f(-5.0f, -5.0f, -10.0f);
+	glVertex3f(15.0f, -5.0f, -10.0f);
+
+	glColor3f(r, g, b);
+	glVertex3f(15.0f, 5.0f, 10.0f);
+	glVertex3f(-5.0f, 5.0f, 10.0f);
+	glVertex3f(-5.0f, -5.0f, 10.0f);
+	glVertex3f(15.0f, -5.0f, 10.0f);
+
+	glColor3f(r, g, b);
+	glVertex3f(15.0f, -5.0f, -10.0f);
+	glVertex3f(-5.0f, -5.0f, -10.0f);
+	glVertex3f(-5.0f, 5.0f, -10.0f);
+	glVertex3f(15.0f, 5.0f, -10.0f);
+
+
+	glColor3f(r, g, b);
+	glVertex3f(-5.0f, 5.0f, 10.0f);
+	glVertex3f(-5.0f, 5.0f, -10.0f);
+	glVertex3f(-5.0f, -5.0f, -10.0f);
+	glVertex3f(-5.0f, -5.0f, 10.0f);
+
+	glColor3f(r, g, b);
+	glVertex3f(15.0f, 5.0f, -10.0f);
+	glVertex3f(15.0f, 5.0f, 10.0f);
+	glVertex3f(15.0f, -5.0f, 10.0f);
+	glVertex3f(15.0f, -5.0f, -10.0f);
+	glEnd();
+}
+
+void DrawCar3D(float r, float g, float b) {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	for (int i = 0; i < carsCount; i++)
+	{
+		glColor4f(cars[i].rgb[0], cars[i].rgb[1], cars[i].rgb[2], 1.0f);
+
+		glBegin(GL_QUADS);
+		glVertex3f(15.0f, 5.0f, -10.0f);
+		glVertex3f(-5.0f, 5.0f, -10.0f);
+		glVertex3f(-5.0f, 5.0f, 10.0f);
+		glVertex3f(15.0f, 5.0f, 10.0f);
+
+		glVertex3f(15.0f, -5.0f, 10.0f);
+		glVertex3f(-5.0f, -5.0f, 10.0f);
+		glVertex3f(-5.0f, -5.0f, -10.0f);
+		glVertex3f(15.0f, -5.0f, -10.0f);
+
+		glVertex3f(15.0f, 5.0f, 10.0f);
+		glVertex3f(-5.0f, 5.0f, 10.0f);
+		glVertex3f(-5.0f, -5.0f, 10.0f);
+		glVertex3f(15.0f, -5.0f, 10.0f);
+
+		glVertex3f(15.0f, -5.0f, -10.0f);
+		glVertex3f(-5.0f, -5.0f, -10.0f);
+		glVertex3f(-5.0f, 5.0f, -10.0f);
+		glVertex3f(15.0f, 5.0f, -10.0f);
+
+
+		glVertex3f(-5.0f, 5.0f, 10.0f);
+		glVertex3f(-5.0f, 5.0f, -10.0f);
+		glVertex3f(-5.0f, -5.0f, -10.0f);
+		glVertex3f(-5.0f, -5.0f, 10.0f);
+
+		glVertex3f(15.0f, 5.0f, -10.0f);
+		glVertex3f(15.0f, 5.0f, 10.0f);
+		glVertex3f(15.0f, -5.0f, 10.0f);
+		glVertex3f(15.0f, -5.0f, -10.0f);
+		glEnd();
+	}
+}
+
 void DrawCube(float r, float g, float b) {
 	//Comandos para habilitar a transparencia em areas sobrepostas
 	glEnable(GL_BLEND);
@@ -133,9 +222,7 @@ void SetSpawnPoints() {
 
 		cars[i].xPos = xPos;
 		cars[i].yPos = yPos + (-20 * i);
-
-		//cars[i].velocity = (2.0 - 0.5) * ((((float)rand()) / (float)RAND_MAX)) + 1.0;
-		cars[i].velocity = rand() % 2 + 1;
+		cars[i].velocity = rand() % stage + 1;
 
 		//yPos -= 40;
 	}
@@ -194,9 +281,7 @@ void NewCar(int carIndex) {
 	cars[carIndex].rgb[1] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 	cars[carIndex].rgb[2] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 
-	//New velocity ta me escutando
-	//cars[carIndex].velocity = (1.0 - 0.5) * ((((float)rand()) / (float)RAND_MAX)) + 0.5;
-	cars[carIndex].velocity = rand() %  2 + 1; 
+	cars[carIndex].velocity = rand() %  stage + 1; 
 }
 
 void CarsMove() {
@@ -281,22 +366,22 @@ void Init() {
 
 void Collision() {
 
-	//Debug cap collision pos
-	glPointSize(5);
-	glColor3f(0, 0, 1);
-	glBegin(GL_POINTS);
-	glVertex2f(capybaraEntity.xPos, capybaraEntity.yPos);
-	glEnd();
+	////Debug cap collision pos
+	//glPointSize(5);
+	//glColor3f(0, 0, 1);
+	//glBegin(GL_POINTS);
+	//glVertex2f(capybaraEntity.xPos, capybaraEntity.yPos);
+	//glEnd();
 
-	//Debug cap collision pos
-	for (int i = 0; i < carsCount; i++)
-	{
-		glPointSize(5);
-		glColor3f(0, 0, 1);
-		glBegin(GL_POINTS);
-		glVertex2f(cars[i].xPos, -cars[i].yPos);
-		glEnd();
-	}
+	////Debug cap collision pos
+	//for (int i = 0; i < carsCount; i++)
+	//{
+	//	glPointSize(5);
+	//	glColor3f(0, 0, 1);
+	//	glBegin(GL_POINTS);
+	//	glVertex2f(cars[i].xPos, -cars[i].yPos);
+	//	glEnd();
+	//}
 
 	//Check if capybara and enemy position are the same, then reestart the game
 	for (int i = 0; i < carsCount; i++)
