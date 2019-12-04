@@ -78,48 +78,91 @@ void DrawCapybara3D(float r, float g, float b) {
 	glEnd();
 }
 
-void DrawCar3D(float r, float g, float b) {
+void DrawCar3D(int i) {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	for (int i = 0; i < carsCount; i++)
-	{
-		glColor4f(cars[i].rgb[0], cars[i].rgb[1], cars[i].rgb[2], 1.0f);
+	#pragma region CarBase
 
-		glBegin(GL_QUADS);
-		glVertex3f(15.0f, 5.0f, -10.0f);
-		glVertex3f(-5.0f, 5.0f, -10.0f);
-		glVertex3f(-5.0f, 5.0f, 10.0f);
-		glVertex3f(15.0f, 5.0f, 10.0f);
+	glBegin(GL_QUADS);
 
-		glVertex3f(15.0f, -5.0f, 10.0f);
-		glVertex3f(-5.0f, -5.0f, 10.0f);
-		glVertex3f(-5.0f, -5.0f, -10.0f);
-		glVertex3f(15.0f, -5.0f, -10.0f);
+	glColor4f(cars[i].rgb[0], cars[i].rgb[1], cars[i].rgb[2], 1.0f);
 
-		glVertex3f(15.0f, 5.0f, 10.0f);
-		glVertex3f(-5.0f, 5.0f, 10.0f);
-		glVertex3f(-5.0f, -5.0f, 10.0f);
-		glVertex3f(15.0f, -5.0f, 10.0f);
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, 5.0f + cars[i].yPos);
 
-		glVertex3f(15.0f, -5.0f, -10.0f);
-		glVertex3f(-5.0f, -5.0f, -10.0f);
-		glVertex3f(-5.0f, 5.0f, -10.0f);
-		glVertex3f(15.0f, 5.0f, -10.0f);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, -5.0f + cars[i].yPos);
 
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, 5.0f + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, 5.0f + cars[i].yPos);
 
-		glVertex3f(-5.0f, 5.0f, 10.0f);
-		glVertex3f(-5.0f, 5.0f, -10.0f);
-		glVertex3f(-5.0f, -5.0f, -10.0f);
-		glVertex3f(-5.0f, -5.0f, 10.0f);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, -5.0f + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, -5.0f + cars[i].yPos);
 
-		glVertex3f(15.0f, 5.0f, -10.0f);
-		glVertex3f(15.0f, 5.0f, 10.0f);
-		glVertex3f(15.0f, -5.0f, 10.0f);
-		glVertex3f(15.0f, -5.0f, -10.0f);
-		glEnd();
-	}
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, 5 + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, 5.0f, -5 + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, -5 + cars[i].yPos);
+	glVertex3f(-5.0f + cars[i].xPos, -5.0f, 5 + cars[i].yPos);
+
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, -5 + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, 5.0f, 5 + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, 5 + cars[i].yPos);
+	glVertex3f(15.0f + cars[i].xPos, -5.0f, -5 + cars[i].yPos);
+
+	glEnd();
+
+	#pragma endregion
+
+	#pragma region CarHood
+
+	glBegin(GL_QUADS);
+
+	glColor4f(1, 1, 1, 1.0f);
+
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+	glVertex3f(-2.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, -3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, 2, 3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, 3 + cars[i].yPos);
+	glVertex3f(7.5 + 2 + cars[i].xPos, -2, -3 + cars[i].yPos);
+
+	glEnd();
+
+	#pragma endregion
+
 }
 
 void DrawCube(float r, float g, float b) {
@@ -205,7 +248,7 @@ void Camera() {
 void SetSpawnPoints() {
 
 	float xPos = 0;
-	float yPos = 70;
+	float yPos = 80;
 
 	for (int i = 0; i < carsCount; i++)
 	{
@@ -231,18 +274,10 @@ void SetSpawnPoints() {
 void DrawCars() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4f(0, 0, 0, 1.0f);
 
 	for (int i = 0; i < carsCount; i++)
 	{
-		glColor4f(cars[i].rgb[0], cars[i].rgb[1], cars[i].rgb[2], 1.0f);
-
-		glBegin(GL_QUADS);
-		glVertex3i(cars[i].xPos - (cars[i].xSize / 2), 0, cars[i].yPos - (cars[i].ySize / 2));
-		glVertex3i((cars[i].xPos + (cars[i].xSize / 2)), 0, cars[i].yPos - (cars[i].ySize / 2));
-		glVertex3i((cars[i].xPos + (cars[i].xSize / 2)), 0, (cars[i].yPos + (cars[i].ySize / 2)));
-		glVertex3i(cars[i].xPos - (cars[i].xSize / 2), 0, (cars[i].yPos + (cars[i].ySize / 2)));
-		glEnd();
+		DrawCar3D(i);
 	}
 }
 
@@ -250,49 +285,44 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-#pragma region Pyramid
-	//Faces
-	glBegin(GL_QUADS);
-	glColor3f(0.25f, 0.1f, 0.13f);
-	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
-	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, -8);
-	glVertex3i(5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
-	glVertex3i(-5 + capybaraEntity.xPos, -5 + capybaraEntity.yPos, 8);
-	glEnd();
+	#pragma region Capybara
 
-	glBegin(GL_QUADS);
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
+		glBegin(GL_QUADS);
+		glColor3f(1, 0.75f, 0.20f);
 
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
 
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
 
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
 
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(-5.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
 
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, -10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, 5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, 10.0f);
-	glVertex3f(15.0f + capybaraEntity.xPos, -5.0f + capybaraEntity.yPos, -10.0f);
-	glEnd();
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(-2.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
 
-#pragma endregion
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, -5);
+		glVertex3f(7.5 + capybaraEntity.xPos, 2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, 5);
+		glVertex3f(7.5 + capybaraEntity.xPos, -2.5 + capybaraEntity.yPos, -5);
+
+		glEnd();
+
+	#pragma endregion
 }
 
 void NewCar(int carIndex) {
