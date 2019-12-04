@@ -23,6 +23,7 @@ struct capybara {
 
 //Game mechanics
 int stage = 1;
+int cameraMode = 2;
 
 //Capybara
 capybara capybaraEntity;
@@ -198,7 +199,7 @@ void DrawCube(float r, float g, float b) {
 
 void Camera() {
 	glOrtho(-100, 100, -100, 100, -100, 237);
-	gluLookAt(2, 20, 20, 0, 0, 0, 0, 1, 0);
+	gluLookAt(cameraMode, 20, 20, 0, 0, 0, 0, 1, 0);
 }
 
 void SetSpawnPoints() {
@@ -207,7 +208,7 @@ void SetSpawnPoints() {
 	float yPos = 70;
 
 	for (int i = 0; i < carsCount; i++)
-	{		
+	{
 		float randValue = 0 + rand() % ((1 + 1) - 0);
 
 		if (randValue != 0) {
@@ -249,7 +250,7 @@ void DrawCapybara() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	#pragma region Pyramid
+#pragma region Pyramid
 	//Faces
 	glBegin(GL_QUADS);
 	glColor3f(0.25f, 0.1f, 0.13f);
@@ -312,7 +313,7 @@ void NewCar(int carIndex) {
 	cars[carIndex].rgb[1] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 	cars[carIndex].rgb[2] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 
-	cars[carIndex].velocity = rand() %  stage + 1; 
+	cars[carIndex].velocity = rand() % stage + 1;
 }
 
 void CarsMove() {
@@ -322,9 +323,9 @@ void CarsMove() {
 		if (cars[i].direction == 'r')
 		{
 			if (cars[i].spawn && cars[i].xPos <= 110) {
-					
-					//cars[i].xPos += 2;
-					cars[i].xPos += cars[i].velocity;
+
+				//cars[i].xPos += 2;
+				cars[i].xPos += cars[i].velocity;
 			}
 			else {
 				NewCar(i);
@@ -336,8 +337,8 @@ void CarsMove() {
 		{
 			if (cars[i].spawn && cars[i].xPos >= -110) {
 
-					//cars[i].xPos -= 2;
-					cars[i].xPos -= cars[i].velocity;
+				//cars[i].xPos -= 2;
+				cars[i].xPos -= cars[i].velocity;
 			}
 			else {
 				NewCar(i);
@@ -447,6 +448,14 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+	if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+		if (cameraMode == 2) {
+			cameraMode = 0;
+		}
+		else {
+			cameraMode = 2;
+		}
 	}
 
 	//Capybara control
