@@ -162,7 +162,6 @@ void DrawCar3D(int i) {
 	glEnd();
 
 	#pragma endregion
-
 }
 
 void DrawCube(float r, float g, float b) {
@@ -266,8 +265,6 @@ void SetSpawnPoints() {
 		cars[i].xPos = xPos;
 		cars[i].yPos = yPos + (-20 * i);
 		cars[i].velocity = rand() % stage + 1;
-
-		//yPos -= 40;
 	}
 }
 
