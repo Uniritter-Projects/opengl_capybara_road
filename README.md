@@ -14,6 +14,8 @@ Your goal is to cross a street without running over.
 ## Commands
 
 * **Arrows or WASD:** Control the capybara.
+* **C:** Change camera perspective.
+* **Enter:** Restart game.
 
 ## Getting Started
 All you need to do, it is run the .exe that is located in the project folder.
