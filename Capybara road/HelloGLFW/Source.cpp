@@ -420,9 +420,9 @@ void Restart() {
 	if (stage > record)
 		record = stage;
 
+	stage = 1;
 	HUD();
 	SetSpawnPoints();
-	stage = 1;
 	capybaraEntity.xPos = 0;
 	capybaraEntity.yPos = -120;
 }
@@ -446,7 +446,10 @@ void Init() {
 
 		for (int i = 0; i < carsCount; i++)
 		{
-			cars[i].velocity = (6 - 1) * ((((float)rand()) / (float)RAND_MAX)) + 1;
+			if (stage == 1)
+				cars[i].velocity = rand() % ((int)stage) + 1;
+			else
+				cars[i].velocity = rand() % ((int)stage / 2) + 1;
 		}
 
 		cars[i].spawn = true;
