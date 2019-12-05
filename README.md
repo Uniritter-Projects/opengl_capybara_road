@@ -1,7 +1,7 @@
 # Capybara road - IN PROGRESS
 
 <p align="center">
-  <img src="https://i.imgur.com/A0i9Utx.gif" width="650" title="hover text">
+  <img src="https://i.imgur.com/LWmMLoA.gif" width="650" title="hover text">
 </p>
 
 This game was made for the OpenGL's university course.
