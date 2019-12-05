@@ -13,7 +13,7 @@ Your goal is to cross a street without running over.
 
 ## Commands
 
-* **Arrows or WASD:** Control the cute capybara.
+* **Arrows or WASD:** Control the capybara.
 
 ## Getting Started
 All you need to do, it is run the .exe that is located in the project folder.
