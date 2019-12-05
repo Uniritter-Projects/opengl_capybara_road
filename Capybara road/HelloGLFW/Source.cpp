@@ -15,6 +15,7 @@ struct car {
 };
 
 struct capybara {
+	char direction = 'f';
 	int xPos;
 	int yPos;
 	int xSize = 2;
@@ -24,6 +25,7 @@ struct capybara {
 //Game mechanics
 int stage = 1;
 int cameraMode = 2;
+int record = 0;
 
 //Capybara
 capybara capybaraEntity;
@@ -33,6 +35,22 @@ const int carsCount = 10;
 float carMove;
 float randCarVelocity;
 car cars[carsCount];
+
+void HUD() {
+
+	system("cls");
+
+	cout << "					 ____________________________ " << endl;
+	cout << "					|  ________________________  |" << endl;
+	cout << "					| |     CAPYBARA ROAD      | |" << endl;
+	cout << "					| |                        | |" << endl;
+	cout << "					| |   Current stage: " << stage << "     | |" << endl;
+	cout << "					| |                        | |" << endl;
+	cout << "					| |       Record: " << record << "        | |" << endl;
+	cout << "					| |________________________| |" << endl;
+	cout << "					|____________________________|" << endl;
+
+}
 
 void DrawCapybara3D(float r, float g, float b) {
 
@@ -340,7 +358,10 @@ void NewCar(int carIndex) {
 	cars[carIndex].rgb[1] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 	cars[carIndex].rgb[2] = (1.0 - 0.0) * ((((float)rand()) / (float)RAND_MAX) / 0.9) + 0.1;
 
-	cars[carIndex].velocity = rand() % stage + 1;
+	if (stage == 1)
+		cars[carIndex].velocity = rand() % ((int)stage) + 1;
+	else
+		cars[carIndex].velocity = rand() % ((int)stage / 2) + 1;
 }
 
 void CarsMove() {
@@ -389,11 +410,17 @@ void CheckStage() {
 		stage++;
 		capybaraEntity.yPos = -120;
 		cout << "Current stage: " << stage << endl;
+		HUD();
 	}
 }
 
 void Restart() {
 	//Set game as default
+
+	if (stage > record)
+		record = stage;
+
+	HUD();
 	SetSpawnPoints();
 	stage = 1;
 	capybaraEntity.xPos = 0;
@@ -401,6 +428,9 @@ void Restart() {
 }
 
 void Init() {
+
+	HUD();
+
 	srand(time(NULL));
 
 	//Player default's position
@@ -448,8 +478,6 @@ void Collision() {
 		if ((cars[i].xPos + (cars[i].xSize / 2) > capybaraEntity.xPos - 5 && cars[i].xPos - (cars[i].xSize / 2) < capybaraEntity.xPos + 5)
 			&& (-cars[i].yPos + (cars[i].ySize / 2) > capybaraEntity.yPos - 5 && -cars[i].yPos - (cars[i].ySize / 2) < capybaraEntity.yPos + 5))
 		{
-			cout << "********************DEAD********************" << endl;
-			cout << "Final points: " << stage << endl;
 			Restart();
 		}
 	}
@@ -490,30 +518,29 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		CheckStage();
 		capybaraEntity.yPos += 20;
-
-		//DebugCapPosition();
+		capybaraEntity.direction = 'f';
 	}
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
 	{
-		if (capybaraEntity.yPos >= -80)
+		if (capybaraEntity.yPos >= -80) {
 			capybaraEntity.yPos -= 20;
-
-		//DebugCapPosition();
+			capybaraEntity.direction = 'b';
+		}
 	}
 	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
 	{
-		if (capybaraEntity.xPos >= -60)
+		if (capybaraEntity.xPos >= -60) {
 			capybaraEntity.xPos -= 20;
-
-		//DebugCapPosition();
+			capybaraEntity.direction = 'l';
+		}
 	}
 	if ((key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) && action == GLFW_PRESS)
 	{
-		if (capybaraEntity.xPos >= 80)
+		if (capybaraEntity.xPos >= 80) {
 			capybaraEntity.xPos -= 20;
-
+		}
 		capybaraEntity.xPos += 20;
-		//DebugCapPosition();
+		capybaraEntity.direction = 'r';
 	}
 }
 
